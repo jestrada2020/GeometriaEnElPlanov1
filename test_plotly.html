@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Plotly - Gráficas Matemáticas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Test de Gráficas con Plotly.js</h1>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Test 1: Puntos y Línea</h3>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-primary" onclick="testDistancia()">Probar Distancia</button>
+                        <div id="test1-canvas" style="height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Test 2: Círculo</h3>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-success" onclick="testCirculo()">Probar Círculo</button>
+                        <div id="test2-canvas" style="height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Test 3: Parábola</h3>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-warning" onclick="testParabola()">Probar Parábola</button>
+                        <div id="test3-canvas" style="height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Test 4: Sistema de Ecuaciones</h3>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-info" onclick="testSistema()">Probar Sistema</button>
+                        <div id="test4-canvas" style="height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/grapher.js"></script>
+    <script>
+        function testDistancia() {
+            const plotId = Grapher.createPlot('test1-canvas', 400, 250, 'Test: Distancia entre Puntos');
+            
+            // Puntos de prueba
+            const points = [
+                {x: 1, y: 2, label: 'P₁(1, 2)'},
+                {x: 4, y: 6, label: 'P₂(4, 6)'}
+            ];
+            
+            Grapher.drawPoints(plotId, points, {
+                color: 'blue',
+                size: 10,
+                name: 'Puntos'
+            });
+            
+            Grapher.drawLine(plotId, 1, 2, 4, 6, {
+                color: 'green',
+                width: 3,
+                name: 'Distancia = 5.0'
+            });
+            
+            Grapher.updateRange(plotId, [0, 5], [1, 7]);
+        }
+        
+        function testCirculo() {
+            const plotId = Grapher.createPlot('test2-canvas', 400, 250, 'Test: Círculo');
+            
+            Grapher.drawCircle(plotId, 2, 1, 3, {
+                color: 'blue',
+                width: 3,
+                name: 'Círculo: r = 3'
+            });
+            
+            Grapher.updateRange(plotId, [-2, 6], [-3, 5]);
+        }
+        
+        function testParabola() {
+            const plotId = Grapher.createPlot('test3-canvas', 400, 250, 'Test: Parábola');
+            
+            Grapher.drawParabola(plotId, 0, 0, 0.5, {
+                color: 'orange',
+                width: 3,
+                name: 'Parábola: y = 0.5x²',
+                isVertical: true,
+                range: 8
+            });
+            
+            Grapher.updateRange(plotId, [-6, 6], [-2, 10]);
+        }
+        
+        function testSistema() {
+            const plotId = Grapher.createPlot('test4-canvas', 400, 250, 'Test: Sistema de Ecuaciones');
+            
+            // Línea 1: x + y - 3 = 0 (1, 1, -3)
+            Grapher.drawExtendedLine(plotId, 1, 1, -3, {
+                color: 'blue',
+                width: 2,
+                name: 'L₁: x + y - 3 = 0',
+                range: 10
+            });
+            
+            // Línea 2: 2x - y + 1 = 0 (2, -1, 1)
+            Grapher.drawExtendedLine(plotId, 2, -1, 1, {
+                color: 'red',
+                width: 2,
+                name: 'L₂: 2x - y + 1 = 0',
+                range: 10
+            });
+            
+            // Punto de intersección: (2/3, 7/3)
+            Grapher.drawPoints(plotId, [{
+                x: 2/3, 
+                y: 7/3, 
+                label: 'Solución(0.67, 2.33)'
+            }], {
+                color: 'green',
+                size: 12,
+                name: 'Intersección',
+                symbol: 'star'
+            });
+            
+            Grapher.updateRange(plotId, [-2, 4], [-1, 5]);
+        }
+    </script>
+</body>
+</html>

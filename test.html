@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Caja de Herramientas</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 10px; border: 1px solid #ccc; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Test de Funcionalidades Básicas</h1>
+    
+    <div class="test-section">
+        <h3>Test 1: Carga de scripts</h3>
+        <div id="test1-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test 2: Funciones utils</h3>
+        <div id="test2-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test 3: Funciones de fracciones</h3>
+        <div id="test3-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test 4: Herramienta de distancia</h3>
+        <div id="test4-result"></div>
+    </div>
+
+    <!-- Scripts en el mismo orden que el index principal -->
+    <script src="js/app.js"></script>
+    <script src="js/fractions.js"></script>
+    <script src="js/distanciaPuntos.js"></script>
+    
+    <script>
+        function runTests() {
+            // Test 1: Verificar carga de scripts
+            const test1 = document.getElementById('test1-result');
+            if (typeof window.app !== 'undefined' && typeof window.utils !== 'undefined') {
+                test1.innerHTML = '<span class="success">✓ Scripts cargados correctamente</span>';
+            } else {
+                test1.innerHTML = '<span class="error">✗ Error en carga de scripts</span>';
+            }
+            
+            // Test 2: Verificar funciones utils
+            const test2 = document.getElementById('test2-result');
+            try {
+                if (utils.showError && utils.formatNumber && utils.isValidNumber) {
+                    test2.innerHTML = '<span class="success">✓ Funciones utils disponibles</span>';
+                } else {
+                    test2.innerHTML = '<span class="error">✗ Faltan funciones utils</span>';
+                }
+            } catch (e) {
+                test2.innerHTML = '<span class="error">✗ Error: ' + e.message + '</span>';
+            }
+            
+            // Test 3: Verificar funciones de fracciones
+            const test3 = document.getElementById('test3-result');
+            try {
+                if (typeof MathUtils !== 'undefined' && MathUtils.parseInput && MathUtils.formatLatex) {
+                    const result = MathUtils.parseInput('3.5');
+                    if (result === 3.5) {
+                        test3.innerHTML = '<span class="success">✓ Funciones de fracciones funcionando</span>';
+                    } else {
+                        test3.innerHTML = '<span class="error">✗ Error en parseInput</span>';
+                    }
+                } else {
+                    test3.innerHTML = '<span class="error">✗ MathUtils no disponible</span>';
+                }
+            } catch (e) {
+                test3.innerHTML = '<span class="error">✗ Error: ' + e.message + '</span>';
+            }
+            
+            // Test 4: Verificar herramienta
+            const test4 = document.getElementById('test4-result');
+            try {
+                if (app.tools && app.tools.distanciaPuntos) {
+                    test4.innerHTML = '<span class="success">✓ Herramienta distanciaPuntos disponible</span>';
+                } else {
+                    test4.innerHTML = '<span class="error">✗ Herramienta no encontrada</span>';
+                }
+            } catch (e) {
+                test4.innerHTML = '<span class="error">✗ Error: ' + e.message + '</span>';
+            }
+        }
+        
+        // Ejecutar tests cuando la página esté cargada
+        setTimeout(runTests, 100);
+    </script>
+</body>
+</html>

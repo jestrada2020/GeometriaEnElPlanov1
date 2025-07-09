@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Elipse - Plotly</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Test de Corrección - Gráficas Geométricas</h1>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Test Elipse</h3>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-primary" onclick="testElipse()">Probar Elipse</button>
+                        <div id="test-ellipse" style="height: 350px;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Test Hipérbola</h3>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-success" onclick="testHiperbola()">Probar Hipérbola</button>
+                        <div id="test-hyperbola" style="height: 350px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Test Parábola Vertical</h3>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-warning" onclick="testParabolaV()">Probar Parábola V</button>
+                        <div id="test-parabola-v" style="height: 350px;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Test Parábola Horizontal</h3>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-info" onclick="testParabolaH()">Probar Parábola H</button>
+                        <div id="test-parabola-h" style="height: 350px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                    <h5><i class="fas fa-info-circle"></i> Instrucciones de Prueba:</h5>
+                    <ul>
+                        <li>Haz clic en cada botón para probar las gráficas</li>
+                        <li>Verifica que el zoom funcione correctamente (rueda del mouse)</li>
+                        <li>Prueba el pan/arrastre con el mouse</li>
+                        <li>Verifica que todas las figuras se muestren correctamente</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/grapher.js"></script>
+    <script>
+        function testElipse() {
+            try {
+                const plotId = Grapher.createPlot('test-ellipse', 400, 300, 'Test: Elipse');
+                
+                // Elipse centrada en (1, 2) con a=4, b=2, horizontal
+                Grapher.drawEllipse(plotId, 1, 2, 4, 2, {
+                    color: 'blue',
+                    width: 3,
+                    name: 'Elipse: a=4, b=2',
+                    isHorizontal: true
+                });
+                
+                // Centro
+                Grapher.drawPoints(plotId, [{x: 1, y: 2, label: 'Centro(1, 2)'}], {
+                    color: 'red',
+                    size: 8,
+                    name: 'Centro',
+                    symbol: 'x'
+                });
+                
+                // Focos (c = sqrt(16-4) = sqrt(12) ≈ 3.46)
+                const c = Math.sqrt(16 - 4);
+                const focos = [
+                    {x: 1 - c, y: 2, label: `F₁(${(1-c).toFixed(2)}, 2)`},
+                    {x: 1 + c, y: 2, label: `F₂(${(1+c).toFixed(2)}, 2)`}
+                ];
+                
+                Grapher.drawPoints(plotId, focos, {
+                    color: 'green',
+                    size: 8,
+                    name: 'Focos',
+                    symbol: 'star'
+                });
+                
+                Grapher.updateRange(plotId, [-4, 6], [-2, 6]);
+                
+                console.log('Elipse test passed!');
+            } catch (error) {
+                console.error('Elipse test failed:', error);
+                document.getElementById('test-ellipse').innerHTML = '<p class="text-danger">Error: ' + error.message + '</p>';
+            }
+        }
+        
+        function testHiperbola() {
+            try {
+                const plotId = Grapher.createPlot('test-hyperbola', 400, 300, 'Test: Hipérbola');
+                
+                // Hipérbola centrada en (0, 0) con a=2, b=3
+                Grapher.drawHyperbola(plotId, 0, 0, 2, 3, {
+                    color: 'red',
+                    width: 2,
+                    name: 'Hipérbola',
+                    isHorizontal: true
+                });
+                
+                Grapher.updateRange(plotId, [-8, 8], [-8, 8]);
+                
+                console.log('Hipérbola test passed!');
+            } catch (error) {
+                console.error('Hipérbola test failed:', error);
+                document.getElementById('test-hyperbola').innerHTML = '<p class="text-danger">Error: ' + error.message + '</p>';
+            }
+        }
+        
+        function testParabolaV() {
+            try {
+                const plotId = Grapher.createPlot('test-parabola-v', 400, 300, 'Test: Parábola Vertical');
+                
+                // Parábola vertical: y = 0.5(x-1)² + 2
+                Grapher.drawParabola(plotId, 1, 2, 0.5, {
+                    color: 'orange',
+                    width: 3,
+                    name: 'Parábola Vertical',
+                    isVertical: true,
+                    range: 6
+                });
+                
+                Grapher.updateRange(plotId, [-4, 6], [-2, 12]);
+                
+                console.log('Parábola vertical test passed!');
+            } catch (error) {
+                console.error('Parábola vertical test failed:', error);
+                document.getElementById('test-parabola-v').innerHTML = '<p class="text-danger">Error: ' + error.message + '</p>';
+            }
+        }
+        
+        function testParabolaH() {
+            try {
+                const plotId = Grapher.createPlot('test-parabola-h', 400, 300, 'Test: Parábola Horizontal');
+                
+                // Parábola horizontal: x = 0.5(y-1)² + 2
+                Grapher.drawParabola(plotId, 2, 1, 0.5, {
+                    color: 'purple',
+                    width: 3,
+                    name: 'Parábola Horizontal',
+                    isVertical: false,
+                    range: 6
+                });
+                
+                Grapher.updateRange(plotId, [-2, 12], [-4, 6]);
+                
+                console.log('Parábola horizontal test passed!');
+            } catch (error) {
+                console.error('Parábola horizontal test failed:', error);
+                document.getElementById('test-parabola-h').innerHTML = '<p class="text-danger">Error: ' + error.message + '</p>';
+            }
+        }
+    </script>
+</body>
+</html>
